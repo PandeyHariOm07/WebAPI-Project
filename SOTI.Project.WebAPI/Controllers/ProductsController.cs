@@ -8,20 +8,24 @@ using Xebia.Project.DataAccessLayer;
 
 namespace SOTI.Project.WebAPI.Controllers
 {
+    [RoutePrefix("api/Products")]
     public class ProductsController : ApiController
     {
         //public IHttpActionResult GetData()
         //{
         //    return Json(new { Message= "Welcome" });
         //}
+
         private readonly IProduct _product = null;
-        public ProductsController()
+        public ProductsController(IProduct product)
         {
-            _product = new ProductDetailsConnect();
+            _product = product;
+            //_product = new ProductDetailsConnect();
         }
 
 
         [HttpGet]
+
         public IHttpActionResult GetProducts()
         {
            var dt = _product.GetProduct();
@@ -31,6 +35,7 @@ namespace SOTI.Project.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("ProductId/{id}")]
         public IHttpActionResult GetProductById(int id)
         {
             var row = _product.GetProductById(id);
@@ -40,7 +45,7 @@ namespace SOTI.Project.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult AddProduct(Product product)
+        public IHttpActionResult AddProduct([FromBody]Product product)
         {
             var res = _product.AddProduct(product.ProductName,product.unitPrice.Value,product.UnitsInStock.Value);
             if (res) return Ok();
@@ -48,6 +53,7 @@ namespace SOTI.Project.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Route("Update/{id}")]
         public IHttpActionResult UpdateProduct([FromUri] int id, [FromBody] Product product)
         {
             var res = _product.UpdateProduct(id, product);
@@ -59,6 +65,7 @@ namespace SOTI.Project.WebAPI.Controllers
 
         }
         [HttpDelete]
+        [Route("Delete/{id}")]
         public IHttpActionResult DeleteProduct([FromUri] int id)
         {
             var res = _product.DeleteProduct(id);

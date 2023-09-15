@@ -16,46 +16,51 @@ namespace Xebia.Project.DataAccessLayer
         private SqlCommand _command = null;
         private SqlDataReader _reader = null;
 
-        public bool AddProduct(string productName, decimal? unitPrice, short? unitsInStock)
+        public bool AddProduct(string productName, decimal unitPrice, int unitsInStock)
         {
-            using (_con = new SqlConnection(SqlConnectionStrings.GetConnectionString))
-            {
-                using (SqlCommand _command = new SqlCommand("usp_AddProduct",_con))
-                {
-                    _command.CommandType = CommandType.StoredProcedure;
-
-
-
-                    if (_con.State != ConnectionState.Open)
-                    {
-                        _con.Open();
-                    }
-
-
-
-                    _command.Parameters.Add(new SqlParameter("@productName", SqlDbType.NVarChar, 40));
-                    _command.Parameters.Add(new SqlParameter("@unitPrice", SqlDbType.Money, 8));
-                    _command.Parameters.Add(new SqlParameter("@unitsInStock", SqlDbType.SmallInt, 2));
-
-
-
-                    _command.Parameters["@productName"].Value = productName;
-                    _command.Parameters["@unitPrice"].Value = unitPrice.Value;
-                    _command.Parameters["@unitsInStock"].Value = unitsInStock.Value;
-
-
-
-                    var res = _command.ExecuteNonQuery();
-                    return res > 0;
-                }
-
-
-
-            }
-
-
-
+            throw new NotImplementedException();
         }
+
+        //public bool AddProduct(string productName, decimal? unitPrice, short? unitsInStock)
+        //{
+        //    using (_con = new SqlConnection(SqlConnectionStrings.GetConnectionString))
+        //    {
+        //        using (SqlCommand _command = new SqlCommand("usp_AddProduct",_con))
+        //        {
+        //            _command.CommandType = CommandType.StoredProcedure;
+
+
+
+        //            if (_con.State != ConnectionState.Open)
+        //            {
+        //                _con.Open();
+        //            }
+
+
+
+        //            _command.Parameters.Add(new SqlParameter("@productName", SqlDbType.NVarChar, 40));
+        //            _command.Parameters.Add(new SqlParameter("@unitPrice", SqlDbType.Money, 8));
+        //            _command.Parameters.Add(new SqlParameter("@unitsInStock", SqlDbType.SmallInt, 2));
+
+
+
+        //            _command.Parameters["@productName"].Value = productName;
+        //            _command.Parameters["@unitPrice"].Value = unitPrice.Value;
+        //            _command.Parameters["@unitsInStock"].Value = unitsInStock.Value;
+
+
+
+        //            var res = _command.ExecuteNonQuery();
+        //            return res > 0;
+        //        }
+
+
+
+        //    }
+
+
+
+        //}
 
         public bool DeleteProduct(int id)
         {

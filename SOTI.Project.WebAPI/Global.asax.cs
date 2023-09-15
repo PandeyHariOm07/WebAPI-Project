@@ -11,6 +11,7 @@ namespace SOTI.Project.WebAPI
     {
         protected void Application_Start()
         {
+            UnityConfig.RegisterComponents();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
