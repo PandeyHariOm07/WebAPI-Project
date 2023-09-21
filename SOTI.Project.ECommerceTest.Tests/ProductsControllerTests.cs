@@ -6,6 +6,7 @@ using SOTI.Project.WebAPI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web.Http;
@@ -27,16 +28,21 @@ namespace SOTI.Project.ECommerceTest.Tests
             _fixture = new Fixture();
         }
 
-        [Test]
-
-        //Arrange
-        public void GetProducts_shouldReturnListOfProduct_WhenProductExist()
+        [SetUp]
+        public void SetUp()
         {
             _controller = new ProductsController(_productMock.Object)
             {
                 Configuration = new HttpConfiguration(),
                 Request = new System.Net.Http.HttpRequestMessage()
             };
+        }
+
+        [Test]
+
+        //Arrange
+        public void GetProducts_shouldReturnListOfProduct_WhenProductExist()
+        {
             var productList = _fixture.CreateMany<Product>(5).ToList();
             _productMock.Setup(p => p.GetProduct()).Returns(productList); //SetUP Database Action
 
@@ -47,6 +53,20 @@ namespace SOTI.Project.ECommerceTest.Tests
             //Assert
             Assert.IsNotNull(actionResult); //checking if it is null
             Assert.AreEqual(200,(int)responce.ExecuteAsync(CancellationToken.None).Result.StatusCode);
+        }
+
+        [Test]
+        public void GetProducts_ShouldReturnsBadRequest_WhenExceptionThrown()
+        {
+            //Arrange
+            _productMock.Setup(p => p.GetProduct()).Throws<Exception>();
+
+            //Act
+            var actionResult = _controller.GetProducts();
+            var res = actionResult as BadRequestErrorMessageResult;
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.BadRequest, res.ExecuteAsync(CancellationToken.None).Result.StatusCode);
         }
     }
 }

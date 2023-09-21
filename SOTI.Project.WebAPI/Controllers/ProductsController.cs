@@ -31,10 +31,17 @@ namespace SOTI.Project.WebAPI.Controllers
 
         public IHttpActionResult GetProducts()
         {
-           var dt = _product.GetProduct();
-            if (dt == null)
-                return BadRequest();
-            return Ok(dt);
+            try
+            {
+                var dt = _product.GetProduct();
+                if (dt == null)
+                    return BadRequest();
+                return Ok(dt);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
