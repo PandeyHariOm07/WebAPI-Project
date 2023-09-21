@@ -60,7 +60,7 @@ namespace Xebia.Project.DataAccessLayer
 
         public List<Product> GetProduct()
         {
-            throw new NotImplementedException();
+            return new List<Product>();
         }
 
         public Product GetProductById(int id)

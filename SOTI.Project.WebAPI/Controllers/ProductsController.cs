@@ -1,13 +1,16 @@
-﻿using System;
+﻿using SOTI.Project.WebAPI.CustomFilter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Xebia.Project.DataAccessLayer;
 
 namespace SOTI.Project.WebAPI.Controllers
 {
+    [EnableCors(origins:"*",headers:"*",methods:"*")]
     [RoutePrefix("api/Products")]
     public class ProductsController : ApiController
     {
@@ -36,6 +39,7 @@ namespace SOTI.Project.WebAPI.Controllers
 
         [HttpGet]
         [Route("ProductId/{id}")]
+        [BasicAuthentication]
         public IHttpActionResult GetProductById(int id)
         {
             var row = _product.GetProductById(id);
@@ -56,6 +60,7 @@ namespace SOTI.Project.WebAPI.Controllers
         [Route("Update/{id}")]
         public IHttpActionResult UpdateProduct([FromUri] int id, [FromBody] Product product)
         {
+            if (id != product.ProductId) return BadRequest();
             var res = _product.UpdateProduct(id, product);
             if (res)
             {
